@@ -25,7 +25,7 @@ Finally, you need to make sure you have a working copy of Java on your system. M
 
 ### Usage
 
-1.   You need to make sure that the settings `DEPLOY_CSS_SPEC` and `DEPLOY_JS_SPEC` are setup properly, as described in [Media Specifications](http://github.com/obeattie/dj-deploy/wikis/media-specifications).
+1.   You need to make sure that the settings `DEPLOY_CSS_SPEC` and `DEPLOY_JS_SPEC` are setup properly, as described in [Media specifications](http://github.com/obeattie/dj-deploy/wikis/media-specifications).
 
 2.   Now you need to modify your templates to take advantage of `dj_deploy`'s features. This involves replacing your stylesheet and JS links with template tags.
     
