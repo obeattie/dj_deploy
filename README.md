@@ -17,7 +17,7 @@ There are a few things you need to setup in your `settings.py` file:
     
     That may seem like an insane process just to get the root directory path, but it works in every edge-case I've come across too.
 
-*   `DEPLOY_CSS_SPEC` and `DEPLOY_JS_SPEC` — these are discussed in [[Media Specifications]].
+*   `DEPLOY_CSS_SPEC` and `DEPLOY_JS_SPEC` — these are discussed in [Media specifications](http://github.com/obeattie/dj-deploy/wikis/media-specifications).
 
 In addition, `dj_deploy` makes use of your version control system's commit id's to generate its compressed filenames (to work around caching issues among other things). If you are using git as a vcs, you need to install GitPython. If you are using SVN, you need do nothing. If you are not using a vcs at all, your filenames will always be the same.
 
@@ -25,11 +25,11 @@ Finally, you need to make sure you have a working copy of Java on your system. M
 
 ### Usage
 
-1.   You need to make sure that the settings `DEPLOY_CSS_SPEC` and `DEPLOY_JS_SPEC` are setup properly, as described in [[Media Specifications]].
+1.   You need to make sure that the settings `DEPLOY_CSS_SPEC` and `DEPLOY_JS_SPEC` are setup properly, as described in [Media Specifications](http://github.com/obeattie/dj-deploy/wikis/media-specifications).
 
 2.   Now you need to modify your templates to take advantage of `dj_deploy`'s features. This involves replacing your stylesheet and JS links with template tags.
     
-    At the top of your template, place `{% load deployment %}`, and to load the media files, put `{% get_media js <spec name> %}` or {% get_media css <spec name> %}`.
+    At the top of your template, place `{% load deployment %}`, and to load the media files, put `{% get_media js <spec name> %}` or `{% get_media css <spec name> %}`.
 
 3.  When you deploy your site (i.e. whenever or wherever `settings.DEBUG` is set to `False`), you need to run `python manage.py compressmedia`. This will concatenate and compress all of the media files. Whenever `DEBUG` is `False`, the compressed files will be used in place of the raw files. Now, wasn't that easy? :)
 
