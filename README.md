@@ -36,3 +36,11 @@ Finally, you need to make sure you have a working copy of Java on your system. M
 ### Bugs
 
 So far, I haven't found any. The code has been in use on multiple production sites for nearly a year. That said, there's always the potential for something to go wrong. If you come across anything, open an Issue and I'll get it fixed :)
+
+### Documentation
+
+I realize that some of the documentation falls short in certain areas, and I'll be working to improve it soon. However, in the mean time, the code is fairly well-commented and pretty easy to read.
+
+### License
+
+Like [Django](http://www.djangoproject.org/), I'm releasing `dj-deploy` under the [BSD License](http://creativecommons.org/licenses/BSD/) – feel free to do whatever you like to the code, basically :)
