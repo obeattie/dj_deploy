@@ -1,7 +1,5 @@
 import inspect, os, subprocess
 
-from django.conf import settings
-
 from dj_deploy.compression import CalledProcessError, Compressor
 
 # Path to the shrinksafe.jar

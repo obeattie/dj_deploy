@@ -1,14 +1,13 @@
 """The compressmedia management command, for compressing css and javascript files into
    discrete modules."""
 import os
-from optparse import make_option
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from dj_deploy.compression.css import compressor as css_compressor
 from dj_deploy.compression.javascript import compressor as js_compressor
 from dj_deploy.specs import css as css_spec, javascript as js_spec, ROOT_PATH
-from dj_deploy.util.misc import flattened, uniquified
+from dj_deploy.util.misc import uniquified
 
 class Command(BaseCommand):
     help = 'Creates (or replaces) compressed media (css/js) files.'
@@ -19,7 +18,7 @@ class Command(BaseCommand):
         css = []
         
         if not specs:
-            # Default to app specs
+            # Default to compressing every spec
             js.extend(js_spec.SPEC.keys())
             css.extend(css_spec.SPEC.keys())
         else:
@@ -43,8 +42,8 @@ class Command(BaseCommand):
         
         # Get the compressed media file for each spec (the compressor takes care
         # of glob expansion etc)
-        js = map(lambda k: (k, js_compressor.compress_spec(js_spec.SPEC[k])), js)
-        css = map(lambda k: (k, css_compressor.compress_spec(css_spec.SPEC[k])), css)
+        js = [(k, js_compressor.compress_spec(js_spec.SPEC[k])) for k in js]
+        css = [(k, css_compressor.compress_spec(css_spec.SPEC[k])) for k in css]
         
         js = {
             'compressed': js,
