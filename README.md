@@ -12,7 +12,7 @@ There are a few things you need to setup in your `settings.py` file:
 
 *   `ROOT` — this should be an absolute path to the root of your project. You can either specify this manually, or add the following code snippet to fetch it dynamically (useful if your dev and production environments are configured differently):
     
-        import os, sys
+        import inspect, os
         ROOT = os.path.realpath(os.path.dirname(inspect.currentframe().f_code.co_filename))
     
     That may seem like an insane process just to get the root directory path, but it works in every edge-case I've come across too.
