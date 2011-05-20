@@ -33,10 +33,6 @@ Finally, you need to make sure you have a working copy of Java on your system. M
 
 3.  When you deploy your site (i.e. whenever or wherever `settings.DEBUG` is set to `False`), you need to run `python manage.py compressmedia`. This will concatenate and compress all of the media files. Whenever `DEBUG` is `False`, the compressed files will be used in place of the raw files. I usually set this up so Fabric/Capistrano will run the command for me on deploy to a server. Now, wasn't that easy? :)
 
-### Bugs
-
-So far, I haven't found any. The code has been in use on multiple production sites for nearly a year. That said, there's always the potential for something to go wrong. If you come across anything, open an Issue and I'll get it fixed :)
-
 ### Documentation
 
 I realize that some of the documentation falls short in certain areas, and I'll be working to improve it soon. However, in the mean time, the code is fairly well-commented and pretty easy to read.

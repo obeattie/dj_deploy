@@ -1,8 +1,9 @@
 import os
 
+from django.conf import settings
+
 from dj_deploy.specs import ROOT_PATH, FileGetter
 from dj_deploy.util.misc import uniquified
-from dj_deploy.util.vcs import get_commit
 
 class CalledProcessError(Exception):
     """Error to be raised whenever a subprocess returns with an error."""
@@ -17,24 +18,39 @@ class CalledProcessError(Exception):
 
 class Compressor(object):
     extensions = []
+    preprocessed_extensions = []
     
-    def call_compressor(self, *args, **kwargs):
+    def call_compressor(self, stdin, *args, **kwargs):
         raise NotImplementedError
     
-    def compress_file(self, f):
-        """Compresses the passed file, returning the result."""
-        if hasattr(f, 'name'):
-            f = f.name
-        
-        return self.call_compressor(f)
+    def get_preprocessed_content(self, f):
+        raise NotImplementedError
     
-    def compress_files(self, *files):
+    def compress_file(self, f, preprocess_only=False):
+        """Compresses the passed file, returning the result."""
+        if not isinstance(f, file):
+            f = file(f)
+        f.seek(0)
+        
+        for ext in self.preprocessed_extensions:
+            if f.name.endswith(ext):
+                content = self.get_preprocessed_content(f)
+                break
+        else:
+            content = f.read()
+        
+        if preprocess_only:
+            return content
+        else:
+            return self.call_compressor(stdin=content)
+    
+    def compress_files(self, *files, **kwargs):
         """Compresses all of the passed files, returning a dictionary of the
            result."""
         result = {}
         
         for f in files:
-            result[f] = self.compress_file(f)
+            result[f] = self.compress_file(f, **kwargs)
         
         return result
     
@@ -56,17 +72,21 @@ class Compressor(object):
            returning a dictionary of the result."""
         return self.compress_files(*self.find_files(root=directory))
     
-    def compress_spec(self, spec):
-        """Compresses all files in the passed spec, returning the result."""
+    def get_spec_files(self, spec):
+        """Returns all the files within the passed spec."""
         files = []
         for pattern in spec:
             if not pattern.startswith('include:'):
                 files.append(pattern)
-        files = FileGetter.process_globs(files)
+        return FileGetter.process_globs(files)
+    
+    def compress_spec(self, spec, **kwargs):
+        """Compresses all files in the passed spec, returning the result."""
+        files = self.get_spec_files(spec=spec)
         
         result = []
         for f in uniquified(files):
-            result.append(self.compress_file(os.path.join(ROOT_PATH, f)))
+            result.append(self.compress_file(os.path.join(ROOT_PATH, f), **kwargs))
         
         return '\n'.join(result)
     
@@ -76,5 +96,5 @@ class Compressor(object):
         return u'%(extension)s/c-%(key)s-%(commit)s.%(extension)s' % {
             'extension': spec['__extension__'],
             'key': key,
-            'commit': get_commit()
+            'commit': settings.VCS_COMMIT_IDENTIFIER,
         }

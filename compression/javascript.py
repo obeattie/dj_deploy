@@ -14,7 +14,7 @@ class JavaScriptCompressor(Compressor):
         self.compressor = compressor
         return super(JavaScriptCompressor, self).__init__(*args)
     
-    def call_compressor(self, *args, **kwargs):
+    def call_compressor(self, stdin, *args, **kwargs):
         """Calls the compressor, returning the stdout."""
         cmd_args = ['java', '-jar', self.compressor]
         cmd_args.extend(args)
@@ -28,8 +28,8 @@ class JavaScriptCompressor(Compressor):
         for key, value in kwargs.items():
             cmd_args.append('--%s=%s' % (key, value))
         
-        process = subprocess.Popen(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = process.communicate()
+        process = subprocess.Popen(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+        stdout, stderr = process.communicate(stdin)
         
         if stderr.strip():
             raise CalledProcessError(process.returncode, cmd_args, stderr.strip())
