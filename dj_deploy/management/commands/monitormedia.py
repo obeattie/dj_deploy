@@ -25,7 +25,7 @@ class Command(BaseCommand):
            'The monitor will run continuously until it receives SIGINT (ctrl+c).'
     args = '[spec ...]'
     
-    def run(self, *specs, **options):
+    def handle(self, *specs, **options):
         js = []
         css = []
         

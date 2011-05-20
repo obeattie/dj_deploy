@@ -18,7 +18,7 @@ class Command(BaseCommand):
             help='Specifies that no compression should be performed; just preprocessing and assembling.'),
     )
     
-    def run(self, *specs, **options):
+    def handle(self, *specs, **options):
         preprocess_only = options['preprocess_only']
         js = []
         css = []
