@@ -91,30 +91,26 @@ class Command(BaseCommand):
         
         # Now, loop 2x per second and watch for changes
         try:
-            self.print_(':')
+            print(':')
             while 1:
                 modified_specs = set()
                 for path, old_timestamp in file_timestamps.items():
                     new_timestamp = os.path.getmtime(path)
                     if not new_timestamp == old_timestamp:
-                        with self.indentation:
-                            self.print_('Modification of %s detected.' % path)
-                            for spec in monitored_files[path]:
-                                modified_specs.add(spec)
+                        print('    Modification of %s detected.' % path)
+                        for spec in monitored_files[path]:
+                            modified_specs.add(spec)
                         file_timestamps[path] = new_timestamp
                 if modified_specs:
-                    with self.indentation:
-                        self.print_('-> Recompiling specs %s...' % (', '.join(modified_specs)))
-                        try:
-                            call_command('compressmedia', preprocess_only=True, *modified_specs)
-                        except CalledProcessError:
-                            with self.indentation:
-                                self.print_('Error processing. Ignored.')
-                        else:
-                            with self.indentation:
-                                self.print_('Done!')
-                    self.print_(':')
+                    print('    -> Recompiling specs %s...' % (', '.join(modified_specs)))
+                    try:
+                        call_command('compressmedia', preprocess_only=True, *modified_specs)
+                    except CalledProcessError:
+                        print('        Error processing. Ignored.')
+                    else:
+                        print('        Done!')
+                    print(':')
                 time.sleep(1.5)
         except KeyboardInterrupt:
-            self.print_('Bye.')
+            print('Bye.')
             sys.exit(0)
