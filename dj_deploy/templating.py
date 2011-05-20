@@ -3,13 +3,11 @@ import urlparse
 from django.conf import settings
 
 from dj_deploy.specs import compile_file_list, css as css_spec, javascript as js_spec
-from dj_deploy.util.templating.decorators import returns_markup
 
 def _get_media_urls(spec, keys):
     """Returns the URLs to the media files in the passed spec with the passed keys."""
     return [urlparse.urljoin(settings.MEDIA_URL, p) for p in compile_file_list(spec, *keys)]
 
-@returns_markup
 def _get_media_markup(spec, keys, template, indent=4):
     """Returns the HTML markup to be inserted into the template for the passed media type
        (spec) and keys."""
