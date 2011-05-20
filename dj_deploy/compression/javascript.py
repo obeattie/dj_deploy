@@ -2,7 +2,6 @@ import subprocess
 
 from dj_deploy.compression import CalledProcessError, Compressor
 
-# Path to the shrinksafe.jar
 COMPRESSOR_PATH = 'yui-compressor'
 
 class JavaScriptCompressor(Compressor):
