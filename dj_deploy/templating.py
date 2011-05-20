@@ -1,6 +1,5 @@
 import urlparse
 
-import jinja2
 from django.conf import settings
 
 from dj_deploy.specs import compile_file_list, css as css_spec, javascript as js_spec
