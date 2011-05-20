@@ -15,11 +15,11 @@ There are a few things you need to setup in your `settings.py` file:
         import os, sys
         ROOT = os.path.realpath(os.path.dirname(inspect.currentframe().f_code.co_filename))
     
-    That may seem like an insane process just to get the root directory path, but it works in every edge-case I've come across too.
+    That may seem like an insane process just to get the root directory path, but it works in every edge-case I've come across.
 
 *   `DEPLOY_CSS_SPEC` and `DEPLOY_JS_SPEC` — these are discussed in [Media specifications](http://wiki.github.com/obeattie/dj_deploy/media-specifications).
 
-In addition, `dj_deploy` makes use of your version control system's commit id's to generate its compressed filenames (to work around caching issues among other things). If you are using git as a vcs, you need to install GitPython. If you are using SVN, you need do nothing. If you are not using a vcs at all, your filenames will always be the same.
+*   `VCS_COMMIT_IDENTIFIER` — this should be set to a commit identifier. Advise setting this to 'dev' and overriding it in a local_settings.py file built in a deployment script.
 
 Finally, you need to make sure you have a working copy of Java on your system. More specifically, you need to ensure you can run [ShrinkSafe](http://www.dojotoolkit.org/docs/shrinksafe) and the [YUI compressor](http://developer.yahoo.com/yui/compressor/). For the moment these are not interchangeable with other compressors, but support for this is planned at some point.
 
