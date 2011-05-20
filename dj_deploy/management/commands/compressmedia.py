@@ -13,7 +13,7 @@ from dj_deploy.util.misc import uniquified
 class Command(BaseCommand):
     help = 'Creates (or replaces) compressed media (css/js) files.'
     args = '[spec ...]'
-    option_list = ManagementCommand.option_list + (
+    option_list = BaseCommand.option_list + (
         make_option('--nocompress', action='store_true', dest='preprocess_only', default=False,
             help='Specifies that no compression should be performed; just preprocessing and assembling.'),
     )
