@@ -1,10 +1,9 @@
-import inspect, os, subprocess
+import subprocess
 
 from dj_deploy.compression import CalledProcessError, Compressor
 
 # Path to the shrinksafe.jar
-COMPRESSOR_PATH = os.path.realpath(os.path.dirname(inspect.currentframe().f_code.co_filename))
-COMPRESSOR_PATH = os.path.join(os.path.dirname(COMPRESSOR_PATH), 'dependencies/shrinksafe.jar')
+COMPRESSOR_PATH = 'yui-compressor'
 
 class JavaScriptCompressor(Compressor):
     extensions = ['.js', ]
@@ -16,7 +15,7 @@ class JavaScriptCompressor(Compressor):
     
     def call_compressor(self, stdin, *args, **kwargs):
         """Calls the compressor, returning the stdout."""
-        cmd_args = ['java', '-jar', self.compressor]
+        cmd_args = [self.compressor]
         cmd_args.extend(args)
         
         # Add default options from self.options

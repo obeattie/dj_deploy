@@ -1,11 +1,10 @@
-import inspect, os, subprocess
+import subprocess
 
 from dj_deploy.compression import CalledProcessError, Compressor
 
 # Path to the shrinksafe.jar
-COMPRESSOR_ROOT = os.path.realpath(os.path.dirname(inspect.currentframe().f_code.co_filename))
-COMPRESSOR_PATH = os.path.join(os.path.dirname(COMPRESSOR_ROOT), 'dependencies/yuicompressor.jar')
-LESS_PATH = os.path.join(os.path.dirname(COMPRESSOR_ROOT), 'dependencies/less_compress.rb')
+COMPRESSOR_PATH = 'yui-compressor'
+LESS_PATH = 'lessc'
 
 class CssCompressor(Compressor):
     extensions = ['.css', ]
@@ -18,7 +17,7 @@ class CssCompressor(Compressor):
     
     def get_preprocessed_content(self, f):
         """Runs the file through the LESS preprocessor."""
-        cmd_args = ['ruby', LESS_PATH, f.name]
+        cmd_args = [LESS_PATH, f.name]
         process = subprocess.Popen(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = process.communicate()
         
@@ -29,7 +28,7 @@ class CssCompressor(Compressor):
     
     def call_compressor(self, stdin, *args, **kwargs):
         """Calls the compressor, returning the stdout."""
-        cmd_args = ['java', '-jar', self.compressor]
+        cmd_args = [self.compressor]
         cmd_args.extend(args)
         
         # Add default options from self.options
