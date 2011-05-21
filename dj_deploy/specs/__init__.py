@@ -3,7 +3,6 @@ import glob, os
 from django.conf import settings
 
 from dj_deploy.util.misc import flattened, uniquified
-from dj_deploy.util.vcs import get_commit
 
 ROOT_PATH = settings.MEDIA_ROOT
 
@@ -91,7 +90,7 @@ class CompressedFileGetter(FileGetter):
             compiled.append(key)
         
         compiled = uniquified(flattened(compiled))
-        commit = get_commit()
+        commit = settings.VCS_COMMIT_IDENTIFIER
         return [u'%s/c-%s-%s.%s' % (self.extension, p, commit, self.extension) for p in compiled]
 
 def compile_file_list(spec, *keys):
