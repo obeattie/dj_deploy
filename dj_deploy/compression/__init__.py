@@ -1,4 +1,5 @@
 import os
+import re
 
 from django.conf import settings
 
@@ -75,12 +76,18 @@ class Compressor(object):
     def get_spec_files(self, spec, include_indirect=False):
         """Returns all the files within the passed spec."""
         files = []
+        EXTENSION_RE = re.compile(r'^(?P<type>\w+):(?P<pattern>.+)$')
+        
         for pattern in spec:
-            if not pattern.startswith('include:'):
-                if not pattern.startswith('indirect:'):
+            match = EXTENSION_RE.match(pattern)
+            if not match:
+                files.append(pattern)
+            else:
+                ext_type, pattern = match.groups()
+                if ext_type == 'indirect' and include_indirect:
                     files.append(pattern)
-                elif include_indirect:
-                    files.append(pattern[9:])
+                elif ext_type == 'dev' and settings.DEBUG:
+                    files.append(pattern)
         return FileGetter.process_globs(files)
     
     def compress_spec(self, spec, **kwargs):
