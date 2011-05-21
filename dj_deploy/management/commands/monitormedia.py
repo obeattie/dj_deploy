@@ -79,6 +79,11 @@ class Command(BaseCommand):
         monitored_files = js_files
         monitored_files.update(css_files)
         
+        if int(options.get('verbosity', 1)) > 1:
+            print '! Monitoring:'
+            for f in monitored_files:
+                print '    %s' % f
+        
         # Now we have a list of files to monitor and a mapping back to the specs
         # they belong to, we can start monitoring for changes.
         # Since I use VMWare as a dev environment, can't use inotify (HGFS

@@ -77,8 +77,10 @@ class Compressor(object):
         files = []
         for pattern in spec:
             if not pattern.startswith('include:'):
-                if include_indirect or not pattern.startswith('indirect:'):
+                if not pattern.startswith('indirect:'):
                     files.append(pattern)
+                elif include_indirect:
+                    files.append(pattern[9:])
         return FileGetter.process_globs(files)
     
     def compress_spec(self, spec, **kwargs):
