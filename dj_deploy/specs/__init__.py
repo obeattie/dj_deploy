@@ -96,8 +96,5 @@ class CompressedFileGetter(FileGetter):
 
 def compile_file_list(spec, *keys):
     """Compiles a path pattern list for the specified keys in spec, returning the
-       source files if DEBUG is True, or the compressed files if not."""
-    if not getattr(settings, 'COMPRESS_MEDIA', (not settings.DEBUG)):
-        return SourceFileGetter(spec=spec).get_file_list(*keys)
-    else:
-        return CompressedFileGetter(spec=spec).get_file_list(*keys)
+       compressed files."""
+    return CompressedFileGetter(spec=spec).get_file_list(*keys)
