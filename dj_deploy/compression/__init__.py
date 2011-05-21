@@ -72,12 +72,13 @@ class Compressor(object):
            returning a dictionary of the result."""
         return self.compress_files(*self.find_files(root=directory))
     
-    def get_spec_files(self, spec):
+    def get_spec_files(self, spec, include_indirect=False):
         """Returns all the files within the passed spec."""
         files = []
         for pattern in spec:
             if not pattern.startswith('include:'):
-                files.append(pattern)
+                if include_indirect or not pattern.startswith('indirect:'):
+                    files.append(pattern)
         return FileGetter.process_globs(files)
     
     def compress_spec(self, spec, **kwargs):

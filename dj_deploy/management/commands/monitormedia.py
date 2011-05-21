@@ -57,7 +57,7 @@ class Command(BaseCommand):
         
         # Create a mapping from every file to the specs that it is a part of
         for spec in js:
-            files = js_compressor.get_spec_files(js_spec.SPEC[spec])
+            files = js_compressor.get_spec_files(js_spec.SPEC[spec], include_indirect=True)
             for f in files:
                 f = os.path.join(settings.MEDIA_ROOT, f)
                 assert os.path.exists(f), f
@@ -67,7 +67,7 @@ class Command(BaseCommand):
                     js_files[f] = [spec, ]
         
         for spec in css:
-            files = css_compressor.get_spec_files(css_spec.SPEC[spec])
+            files = css_compressor.get_spec_files(css_spec.SPEC[spec], include_indirect=True)
             for f in files:
                 f = os.path.join(settings.MEDIA_ROOT, f)
                 assert os.path.exists(f), f
@@ -89,7 +89,7 @@ class Command(BaseCommand):
         for path in monitored_files:
             file_timestamps[path] = os.path.getmtime(path)
         
-        # Now, loop 2x per second and watch for changes
+        # Now, loop and watch for changes
         try:
             print(':')
             while 1:
